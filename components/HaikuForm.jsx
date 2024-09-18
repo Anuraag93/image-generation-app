@@ -1,10 +1,19 @@
 "use client";
 import { useFormState } from "react-dom";
-import { createHaiku } from "../actions/haikuController";
+import { createHaiku, editHaiku } from "../actions/haikuController";
 
-export default function HaikuForm() {
-  //variables
-  const [formState, formAction] = useFormState(createHaiku, {});
+export default function HaikuForm(props) {
+  let haikuFormAction;
+
+  if (props.action === "create") {
+    haikuFormAction = createHaiku;
+  }
+
+  if (props.action === "edit") {
+    haikuFormAction = editHaiku;
+  }
+
+  const [formState, formAction] = useFormState(haikuFormAction, {});
   return (
     <form action={formAction} className="max-w-xs mx-auto">
       <div className="mb-3">
@@ -12,6 +21,7 @@ export default function HaikuForm() {
           type="text"
           autoComplete="off"
           name="line1"
+          defaultValue={props.haiku?.line1}
           placeholder="line #1"
           className="input input-bordered w-full max-w-xs"
         />
@@ -39,6 +49,7 @@ export default function HaikuForm() {
           type="text"
           autoComplete="off"
           name="line2"
+          defaultValue={props.haiku?.line2}
           placeholder="line #2"
           className="input input-bordered w-full max-w-xs"
         />
@@ -66,6 +77,7 @@ export default function HaikuForm() {
           type="text"
           autoComplete="off"
           name="line3"
+          defaultValue={props.haiku?.line3}
           placeholder="line #3"
           className="input input-bordered w-full max-w-xs"
         />
@@ -88,6 +100,11 @@ export default function HaikuForm() {
           </div>
         )}
       </div>
+      <input
+        type="hidden"
+        name="haikuId"
+        defaultValue={props.haiku?._id.toString()}
+      />
       <button className="btn btn-primary">Submit</button>
     </form>
   );

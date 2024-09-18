@@ -1,12 +1,13 @@
 import RegisterForm from "../components/RegisterForm";
 import { getUserDataFromCookie } from "../lib/getUser";
+import Dashboard from "../components/Dashboard";
 
 export default async function Page() {
   const user = await getUserDataFromCookie();
 
   return (
     <>
-      {user && <p>Welcome, you are logged in. </p>}
+      {user && <Dashboard user={user} />}
       {!user && (
         <>
           <p className="text-center text-2xl text-gray-600 mb-5">

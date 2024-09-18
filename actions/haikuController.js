@@ -77,3 +77,68 @@ export const createHaiku = async function (prevState, formData) {
 
   return redirect("/");
 };
+
+export const deleteHaiku = async function (formData) {
+  // check if you are logged in to allow the user to create a haiku
+  const user = await getUserDataFromCookie();
+
+  if (!user) {
+    return redirect("/");
+  }
+  // edit the existing haiku into db
+  const haikuCollection = await getCollection("haikus");
+  let haikuId = formData.get("id");
+  if (typeof haikuId != "string") haikuId = "";
+
+  //make sure you are the author of the post, otherwise fail the operation
+  const haikuInQuestion = await haikuCollection.findOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+  if (haikuInQuestion.author.toString() !== user.userId) {
+    // rediect to home page because user is not authorized
+    return redirect("/");
+  }
+  // update the post
+  await haikuCollection.deleteOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+
+  return redirect("/");
+};
+
+export const editHaiku = async function (prevState, formData) {
+  // check if you are logged in to allow the user to create a haiku
+  const user = await getUserDataFromCookie();
+
+  if (!user) {
+    return redirect("/");
+  }
+  const results = await sharedHaikuLogic(formData, user);
+
+  if (results.errors.line1 || results.errors.line2 || results.errors.line3) {
+    return { errors: results.errors };
+  }
+
+  // edit the existing haiku into db
+  const haikuCollection = await getCollection("haikus");
+  let haikuId = formData.get("haikuId");
+
+  if (typeof haikuId != "string") haikuId = "";
+
+  //make sure you are the author of the post, otherwise fail the operation
+  const haikuInQuestion = await haikuCollection.findOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+  if (haikuInQuestion.author.toString() !== user.userId) {
+    // rediect to home page because user is not authorized
+    return redirect("/");
+  }
+
+  // update the post
+  await haikuCollection.findOneAndUpdate(
+    { _id: ObjectId.createFromHexString(haikuId) },
+    { $set: results.ourHaiku }
+  );
+
+  return redirect("/");
+};
