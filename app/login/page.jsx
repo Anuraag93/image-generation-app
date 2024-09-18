@@ -1,10 +1,71 @@
-export default function Page(){
+"use client";
+
+import { useFormState } from "react-dom";
+import { login } from "../../actions/userController";
+
+export default function Page() {
+  const [formState, formAction] = useFormState(login, {});
+
   return (
     <>
-      <h3>Login Page</h3>
-      <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
+      <h2 className="text-center text-2xl text-gray-600 mb-5">Login Page</h2>
+      <form action={formAction} className="max-w-xs mx-auto">
+        <div className="mb-3">
+          <input
+            type="text"
+            autoComplete="off"
+            name="username"
+            placeholder="Username"
+            className="input input-bordered w-full max-w-xs"
+          />
+          {formState.errors?.username && (
+            <div role="alert" className="alert alert-warning">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 shrink-0 stroke-current"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span>{formState.errors?.username}</span>
+            </div>
+          )}
+        </div>
+        <div className="mb-3">
+          <input
+            type="password"
+            autoComplete="off"
+            name="password"
+            placeholder="Password"
+            className="input input-bordered w-full max-w-xs"
+          />
+          {formState.errors?.password && (
+            <div role="alert" className="alert alert-warning">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 shrink-0 stroke-current"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <span>{formState.errors?.password}</span>
+            </div>
+          )}
+        </div>
+        <button className="btn btn-primary">Submit</button>
+      </form>
     </>
-  )
+  );
 }
