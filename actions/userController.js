@@ -64,7 +64,7 @@ export const register = async function (prevState, formData) {
   // create our JWT value
   const ourTokenValue = jwt.sign(
     {
-      skyColor: "blue",
+      skyColor: "green",
       userId: userId,
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
     },
