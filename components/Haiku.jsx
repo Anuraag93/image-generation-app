@@ -5,6 +5,11 @@ import { CldImage } from "next-cloudinary";
 
 export default function Haiku(props) {
   const haiku = props.item;
+
+  if (!haiku.photo) {
+    haiku.photo = "samples/coffee";
+  }
+
   return (
     <div className="flex mx-auto mb-7">
       <div>
@@ -21,7 +26,12 @@ export default function Haiku(props) {
       <div>
         <h3 className="text-center text-color-gray-600 text-xl">After</h3>
         <div className="relative rounded-xl overflow-hidden max-w-[650px]">
+          <img src="/aspect-ratio.png" />
+          <div className="absolute inset-0 bg-gray-200 grid">
+            <span className="loading loading-dots loading-lg m-auto"></span>
+          </div>
           <CldImage
+            className="absolute inset-0"
             width="650"
             height="300"
             sizes="650px"
