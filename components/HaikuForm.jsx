@@ -1,8 +1,14 @@
 "use client";
+import { useState } from "react";
 import { useFormState } from "react-dom";
 import { createHaiku, editHaiku } from "../actions/haikuController";
+import { CldUploadWidget } from "next-cloudinary";
 
 export default function HaikuForm(props) {
+  const [signature, setSignature] = useState();
+  const [publicId, setPublicId] = useState();
+  const [version, setVersion] = useState();
+
   let haikuFormAction;
 
   if (props.action === "create") {
@@ -100,6 +106,36 @@ export default function HaikuForm(props) {
           </div>
         )}
       </div>
+
+      <div className="mb-4">
+        <CldUploadWidget
+          onSuccess={(result, { widget }) => {
+            console.log(result?.info); // info.public_id for the photo
+
+            setPublicId(result?.info.public_id);
+            setSignature(result?.info.signature);
+            setVersion(result?.info.version);
+          }}
+          onQueuesEnd={(result, { widget }) => widget.close()}
+          signatureEndpoint="/widget-signature"
+        >
+          {({ open }) => {
+            function handleClick(e) {
+              e.preventDefault(); // prevent auto submit
+              open();
+            }
+            return (
+              <button className="btn btn-secondary" onClick={handleClick}>
+                Upload an Image
+              </button>
+            );
+          }}
+        </CldUploadWidget>
+      </div>
+
+      <input type="hidden" name="public_id" defaultValue={publicId} />
+      <input type="hidden" name="version" defaultValue={version} />
+      <input type="hidden" name="signature" defaultValue={signature} />
       <input
         type="hidden"
         name="haikuId"
