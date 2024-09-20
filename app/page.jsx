@@ -1,6 +1,6 @@
-import RegisterForm from "../components/RegisterForm";
-import { getUserDataFromCookie } from "../lib/getUser";
-import Dashboard from "../components/Dashboard";
+import RegisterForm from "@/components/RegisterForm";
+import { getUserDataFromCookie } from "@/lib/getUser";
+import Dashboard from "@/components/Dashboard";
 
 export default async function Page() {
   const user = await getUserDataFromCookie();

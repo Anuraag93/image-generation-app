@@ -1,6 +1,6 @@
 "use server";
 
-import { getCollection } from "../lib/db.js";
+import { getCollection } from "@/lib/db.js";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";

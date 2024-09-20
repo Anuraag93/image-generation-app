@@ -1,6 +1,6 @@
-import { getUserDataFromCookie } from "../../lib/getUser";
+import { getUserDataFromCookie } from "@/lib/getUser";
 import { redirect } from "next/navigation";
-import HaikuForm from "../../components/HaikuForm";
+import HaikuForm from "@/components/HaikuForm";
 
 export default async function Page() {
   // dont show this page if the user is not logged in

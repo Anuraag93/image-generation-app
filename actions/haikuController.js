@@ -1,9 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getUserDataFromCookie } from "../lib/getUser";
+import { getUserDataFromCookie } from "@/lib/getUser";
 import { ObjectId } from "mongodb";
-import { getCollection } from "../lib/db";
+import { getCollection } from "@/lib/db";
 import cloudinary from "cloudinary";
 
 const cloudinaryConfig = cloudinary.config({
